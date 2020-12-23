@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000 
+    volumes:
+      - .:/project
+    ports:
+      - '8000:8000'
+    depends_on:
+     - db
+    links:
+      - db
+  db:
+    image: mysql:5.6
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'preet_db'
+      MYSQL_USER: 'preet'
+      MYSQL_PASSWORD: 'preet123'
+      MYSQL_ROOT_PASSWORD: 'preet123'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - .:/project
+
+     

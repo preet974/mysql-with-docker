@@ -1,0 +1,78 @@
+
+sudo /etc/init.d/mysql stop
+
+sudo docker  ps -a
+
+kill -9 (port_id)
+
+sudo netstat -tupna | grep -i list
+
+sudo docker-compose build
+
+sudo docker-compose up
+
+sudo docker ps -a
+
+sudo docker exec -it (container_id) python manage.py createsuperuser
+
+python manage.py migrate
+
+python manage.py createsuperuser
+
+sudo docker-compose up
+
+
+
+
+*******************************create Docker file ***************************
+FROM python:3.8
+ENV PREET=1
+WORKDIR /project
+ADD . requirements.txt /project/
+RUN  pip install -r requirements.txt
+COPY . /project
+
+*********************Docker_compos.yml*********************
+
+version: '3.3'
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000 
+    volumes:
+      - .:/project
+    ports:
+      - '8000:8000'
+    depends_on:
+     - db
+    links:
+      - db
+  db:
+    image: mysql:5.6
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'preet_db'
+      MYSQL_USER: 'preet'
+      MYSQL_PASSWORD: 'preet123'
+      MYSQL_ROOT_PASSWORD: 'preet123'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - .:/project
+*******************************************set.py*********************************
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'preet_db',
+        'USER': 'preet',
+        'PASSWORD': 'preet123',
+        'HOST': '172.21.0.2',(ip_your conterner)
+        'PORT': '3306',
+    }
+}
+     
+*******************************mysql**************************
+
+
